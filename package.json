@@ -1,0 +1,25 @@
+{
+  "name": "carental_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "NODE_ENV=production node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mogoziri/t3a2_b_irina-michelle_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mogoziri/t3a2_b_irina-michelle_backend/issues"
+  },
+  "homepage": "https://github.com/mogoziri/t3a2_b_irina-michelle_backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "mongoose": "^6.9.1"
+  }
+}
