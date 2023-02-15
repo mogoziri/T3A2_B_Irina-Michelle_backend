@@ -3,6 +3,8 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 const helmet = require("helmet")
 
+const userRouter = require("./controllers/users/userControllers")
+
 const app = express()
 
 app.use(helmet())
@@ -23,6 +25,8 @@ app.get("/", (request, response) => {
     data: "Hello World",
   })
 })
+
+app.use("/users", userRouter)
 
 module.exports = {
   app,
