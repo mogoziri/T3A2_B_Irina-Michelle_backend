@@ -2,8 +2,9 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const helmet = require("helmet")
+require("dotenv").config()
 
-const userRouter = require("./controllers/users/userControllers")
+const userRouter = require("./controllers/users/userRoutes")
 
 const app = express()
 

@@ -17,7 +17,7 @@ async function registerUser(user) {
   const payload = {
     id: userCreated._id,
   }
-  const token = jwt.sign(payload, "carental")
+  const token = jwt.sign(payload, process.env.JWT_SECRET)
   return token
 }
 
@@ -37,7 +37,7 @@ async function loginUser(user) {
     id: existingUser._id,
     // is_admin: undefined which translates to false
   }
-  const token = jwt.sign(payload, "carental")
+  const token = jwt.sign(payload, process.env.JWT_SECRET)
   //return the token
   return token
 }

@@ -19,7 +19,7 @@ async function loginAdmin(user) {
     id: existingUser._id,
     is_admin: true,
   }
-  const token = jwt.sign(payload, "carental")
+  const token = jwt.sign(payload, process.env.JWT_SECRET)
   //return the token
   return token
 }
