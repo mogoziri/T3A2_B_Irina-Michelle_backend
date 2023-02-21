@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 
 const VehicleRatingSchema = new mongoose.Schema({
-  user_id: {type: String, required: true},
-  vehicle_id: {type: String, required: true},
+  user_id: { type: String, required: true },
+  vehicle_id: { type: String, required: true },
   date: { type: Date, default: Date.now },
   rating: {
     type: Number,
