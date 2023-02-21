@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jwt")
 
 const User = require("../../models/user")
-const Admin = require("../../models/admin")
+const Owner = require("../../models/owner")
 
 async function registerUser(user) {
   const existingUser = await User.findOne({ username: user.username })
@@ -42,29 +42,7 @@ async function loginUser(user) {
   return token
 }
 
-async function loginAdmin(user) {
-  //check if username exists
-  const existingUser = await Admin.findOne({ username: user.username })
-  if (!existingUser) {
-    return { error: "username or password is incorrect" }
-  }
-  //match the password
-  const isMatch = await bcrypt.compare(user.password, existingUser.password)
-  if (!isMatch) {
-    return { error: "username or password is incorrect" }
-  }
-  //create the token
-  const payload = {
-    id: existingUser._id,
-    is_admin: true,
-  }
-  const token = jwt.sign(payload, "carental")
-  //return the token
-  return token
-}
-
 module.exports = {
   registerUser,
   loginUser,
-  loginAdmin,
 }
