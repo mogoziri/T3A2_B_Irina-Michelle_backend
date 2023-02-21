@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { registerUser, loginUser, loginAdmin } = require("./userControllers")
+const { registerUser, loginUser } = require("./userControllers")
 
 const userRouter = express.Router()
 
@@ -17,14 +17,6 @@ userRouter.post("/register", async (request, response) => {
 
 userRouter.post("/login", async (request, response) => {
   const token = await loginUser({
-    username: request.body.username,
-    password: request.body.password,
-  })
-  return response.json(token)
-})
-
-userRouter.post("/admin/login", async (request, response) => {
-  const token = await loginAdmin({
     username: request.body.username,
     password: request.body.password,
   })
