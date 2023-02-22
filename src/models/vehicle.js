@@ -6,7 +6,10 @@ const VehicleSchema = new mongoose.Schema({
     required: true,
     minLength: 3,
   },
-  host: {},
+  owner_id: {
+    type: String,
+    required: true,
+  },
   price_per_day: {
     type: Number,
     required: true,
@@ -27,6 +30,9 @@ const VehicleSchema = new mongoose.Schema({
   features: {
     type: String,
   },
+  picture_url: {
+    type: String,
+  }
 })
 
 const Vehicle = mongoose.model("Vehicle", VehicleSchema)
