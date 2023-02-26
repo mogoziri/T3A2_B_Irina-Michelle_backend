@@ -7,28 +7,21 @@ const User = require("./models/user")
 const Owner = require("./models/owner")
 const Vehicle = require("./models/vehicle")
 
-mongoose.connect(process.env.MONGO_URI, async () => {
-  await Admin.deleteMany({})
-  const adminHashedPassword = await bcrypt.hash("password", 10)
-  const admin = await Admin.create({
-    username: "admin",
-    password: adminHashedPassword,
-  })
-  console.log(admin)
-  await User.deleteMany({})
-  const userHashedPassword = await bcrypt.hash("password", 10)
-  const user = await User.create({
-    username: "user",
-    password: userHashedPassword,
+async function initializeCollection(collection, username) {
+  await collection.deleteMany({})
+  const hashedPassword = await bcrypt.hash("password", 10)
+  const user = await collection.create({
+    username: username,
+    password: hashedPassword,
   })
   console.log(user)
-  await Owner.deleteMany({})
-  const ownerHashedPassword = await bcrypt.hash("password", 10)
-  const owner = await Owner.create({
-    username: "owner",
-    password: ownerHashedPassword,
-  })
-  console.log(owner)
+  return user
+}
+
+mongoose.connect(process.env.MONGO_URI, async () => {
+  const admin = await initializeCollection(Admin, "admin")
+  const owner = await initializeCollection(Owner, "owner")
+  const user = await initializeCollection(User, "user")
   await Vehicle.deleteMany({})
   const vehicle = await Vehicle.create({
     type: "SUV",
