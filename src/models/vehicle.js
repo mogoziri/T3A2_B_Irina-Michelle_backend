@@ -32,7 +32,7 @@ const VehicleSchema = new mongoose.Schema({
   },
   picture_url: {
     type: String,
-  }
+  },
 })
 
 const Vehicle = mongoose.model("Vehicle", VehicleSchema)

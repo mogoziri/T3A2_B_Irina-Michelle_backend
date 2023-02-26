@@ -5,6 +5,7 @@ const helmet = require("helmet")
 require("dotenv").config()
 
 const userRouter = require("./controllers/users/userRoutes")
+const vehicleRouter = require("./controllers/vehicles/vehicleRoutes")
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.get("/", (request, response) => {
 })
 
 app.use("/users", userRouter)
+app.use("/vehicles", vehicleRouter)
 
 module.exports = {
   app,
