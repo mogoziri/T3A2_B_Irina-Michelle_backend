@@ -1,6 +1,10 @@
 const express = require("express")
 
-const { registerOwner, loginOwner } = require("./ownerControllers")
+const {
+  registerOwner,
+  loginOwner,
+  listOwnerVehicles,
+} = require("./ownerControllers")
 
 const ownerRouter = express.Router()
 
@@ -21,6 +25,11 @@ ownerRouter.post("/login", async (request, response) => {
     password: request.body.password,
   })
   return response.json(token)
+})
+
+// TODO: make sure only logged in owner is allowed
+ownerRouter.get("/:ownerId/vehicles", async (request, response) => {
+  return response.json(await listOwnerVehicles(request.params.ownerId))
 })
 
 module.exports = ownerRouter

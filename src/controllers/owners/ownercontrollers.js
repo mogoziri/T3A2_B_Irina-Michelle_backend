@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const Owner = require("../../models/owner")
+const Vehicle = require("../../models/vehicle")
 
 async function registerOwner(owner) {
   const existingOwner = await Owner.findOne({ username: owner.username })
@@ -41,7 +42,14 @@ async function loginOwner(owner) {
   return token
 }
 
+async function listOwnerVehicles(ownerId) {
+  const ownerVehicles = await Vehicle.find({ owner_id: ownerId })
+
+  return ownerVehicles
+}
+
 module.exports = {
   registerOwner,
   loginOwner,
+  listOwnerVehicles,
 }
