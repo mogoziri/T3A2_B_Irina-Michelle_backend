@@ -4,8 +4,10 @@ const cors = require("cors")
 const helmet = require("helmet")
 require("dotenv").config()
 
+const adminRouter = require("./controllers/admin/adminRoutes")
 const userRouter = require("./controllers/users/userRoutes")
 const vehicleRouter = require("./controllers/vehicles/vehicleRoutes")
+const ownerRouter = require("./controllers/owners/ownerRoutes")
 
 const app = express()
 
@@ -28,8 +30,10 @@ app.get("/", (request, response) => {
   })
 })
 
+app.use("/admin", adminRouter)
 app.use("/users", userRouter)
 app.use("/vehicles", vehicleRouter)
+app.use("/owners", ownerRouter)
 
 module.exports = {
   app,
