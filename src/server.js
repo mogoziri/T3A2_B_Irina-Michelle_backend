@@ -1,6 +1,6 @@
 const express = require("express")
-const mongoose = require("mongoose")
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 require("dotenv").config()
 
@@ -11,8 +11,8 @@ const ownerRouter = require("./controllers/owners/ownerRoutes")
 
 const app = express()
 
+app.use(cookieParser())
 app.use(helmet())
-
 app.use(express.json())
 
 const corsOption = {
