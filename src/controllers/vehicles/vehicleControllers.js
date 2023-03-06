@@ -10,7 +10,28 @@ async function getVehicle(id) {
   return vehicle
 }
 
+async function createVehicle(vehicle) {
+  const newVehicle = await Vehicle.create(vehicle)
+  return newVehicle
+}
+
+async function updateVehicle(vehicleId, vehicle) {
+  const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicle, {
+    new: true,
+    upsert: true,
+  })
+  return updatedVehicle
+}
+
+async function deleteVehicle(vehicleId) {
+  const deletedVehicle = await Vehicle.findByIdAndDelete(vehicleId)
+  return deletedVehicle
+}
+
 module.exports = {
   findVehicles,
   getVehicle,
+  createVehicle,
+  updateVehicle,
+  deleteVehicle,
 }
