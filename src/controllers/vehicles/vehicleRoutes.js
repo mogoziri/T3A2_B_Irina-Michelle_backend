@@ -6,6 +6,7 @@ const {
   createVehicle,
   updateVehicle,
   deleteVehicle,
+  createVehicleRating,
 } = require("./vehicleControllers")
 
 const { auth } = require("../../middleware/auth")
@@ -62,6 +63,13 @@ vehicleRouter.put("/:vehicleId", auth, async (request, response) => {
 vehicleRouter.delete("/:vehicleId", auth, admin, async (request, response) => {
   const vehicle = await deleteVehicle(request.params.vehicleId)
   response.json(vehicle)
+})
+
+vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
+  const vehicleRating = await createVehicleRating(request.params.vehicleId, {
+    rating: request.body.rating,
+  })
+  response.json(vehicleRating)
 })
 
 module.exports = vehicleRouter

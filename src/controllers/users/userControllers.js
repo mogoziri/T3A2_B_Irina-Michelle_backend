@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const User = require("../../models/user")
+const UserRating = require("../../models/user_rating")
 
 async function registerUser(user) {
   const existingUser = await User.findOne({ username: user.username })
@@ -46,8 +47,14 @@ async function listUserReservations(userId) {
   return userReservations
 }
 
+async function createUserRating(userRating) {
+  const newUserRating = await UserRating.create(userRating)
+  return newUserRating
+}
+
 module.exports = {
   registerUser,
   loginUser,
   listUserReservations,
+  createUserRating,
 }
