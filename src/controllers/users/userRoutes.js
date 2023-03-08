@@ -4,6 +4,8 @@ const {
   registerUser,
   loginUser,
   listUserReservations,
+  listOwnerVehicles,
+  getAverageUserRating,
   createUserRating,
 } = require("./userControllers")
 const { auth } = require("../../middleware/auth")
@@ -45,6 +47,15 @@ userRouter.post("/:userId/rating", auth, async (request, response) => {
     rating: request.body.rating,
   })
   response.json(userRating)
+})
+
+userRouter.get("/:userId/rating", async (request, response) => {
+  const userRating = await getAverageUserRating(request.params.userId)
+  response.json(userRating)
+})
+
+userRouter.get("/:ownerId/vehicles", async (request, response) => {
+  return response.json(await listOwnerVehicles(request.params.ownerId))
 })
 
 module.exports = userRouter

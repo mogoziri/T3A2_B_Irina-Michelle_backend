@@ -2,30 +2,28 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 require("dotenv").config()
 
-const Admin = require("./models/admin")
 const User = require("./models/user")
-const Owner = require("./models/owner")
 const Vehicle = require("./models/vehicle")
 
-async function initializeCollection(collection, username) {
-  await collection.deleteMany({})
+async function createUser(username, isAdmin) {
   const hashedPassword = await bcrypt.hash("password", 10)
-  const user = await collection.create({
+  const user = await User.create({
     username: username,
     password: hashedPassword,
+    is_admin: isAdmin,
   })
   console.log(user)
   return user
 }
 
 mongoose.connect(process.env.MONGO_URI, async () => {
-  const admin = await initializeCollection(Admin, "admin")
-  const owner = await initializeCollection(Owner, "owner")
-  const user = await initializeCollection(User, "user")
+  await User.deleteMany({})
+  const user = await createUser("user")
+  const admin = await createUser("admin", true)
   await Vehicle.deleteMany({})
   const vehicle = await Vehicle.create({
     type: "SUV",
-    owner_id: owner._id,
+    owner_id: user._id,
     price_per_day: 90,
     location: "Summer Hill, NSW",
     availability: true,

@@ -7,6 +7,7 @@ const {
   updateVehicle,
   deleteVehicle,
   createVehicleRating,
+  getAverageVehicleRating,
 } = require("./vehicleControllers")
 
 const { auth } = require("../../middleware/auth")
@@ -69,6 +70,11 @@ vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
   const vehicleRating = await createVehicleRating(request.params.vehicleId, {
     rating: request.body.rating,
   })
+  response.json(vehicleRating)
+})
+
+vehicleRouter.get("/:vehicleId/rating", async (request, response) => {
+  const vehicleRating = await getAverageVehicleRating(request.params.vehicleId)
   response.json(vehicleRating)
 })
 

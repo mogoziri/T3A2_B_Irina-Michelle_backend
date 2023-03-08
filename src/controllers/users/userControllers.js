@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const User = require("../../models/user")
+const Vehicle = require("../../models/vehicle")
 const UserRating = require("../../models/user_rating")
 
 async function registerUser(user) {
@@ -47,6 +48,17 @@ async function listUserReservations(userId) {
   return userReservations
 }
 
+async function listOwnerVehicles(ownerId) {
+  const ownerVehicles = await Vehicle.find({ owner_id: ownerId })
+
+  return ownerVehicles
+}
+
+// TODO: implement
+async function getAverageUserRating(userId) {
+  return 5.0
+}
+
 async function createUserRating(userRating) {
   const newUserRating = await UserRating.create(userRating)
   return newUserRating
@@ -56,5 +68,7 @@ module.exports = {
   registerUser,
   loginUser,
   listUserReservations,
+  listOwnerVehicles,
+  getAverageUserRating,
   createUserRating,
 }
