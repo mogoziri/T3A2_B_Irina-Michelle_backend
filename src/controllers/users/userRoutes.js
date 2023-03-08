@@ -4,6 +4,7 @@ const {
   registerUser,
   loginUser,
   listUserReservations,
+  createUserRating,
 } = require("./userControllers")
 const { auth } = require("../../middleware/auth")
 
@@ -37,6 +38,13 @@ userRouter.get("/:userId/reservations", auth, async (request, response) => {
   }
   const reservations = await listUserReservations(request.params.userId)
   return response.json(reservations)
+})
+
+userRouter.post("/:userId/rating", auth, async (request, response) => {
+  const userRating = await createUserRating(request.params.userId, {
+    rating: request.body.rating,
+  })
+  response.json(userRating)
 })
 
 module.exports = userRouter

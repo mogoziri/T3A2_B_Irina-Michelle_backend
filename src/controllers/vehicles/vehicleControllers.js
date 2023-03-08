@@ -1,4 +1,5 @@
 const Vehicle = require("../../models/vehicle")
+const VehicleRating = require("../../models/vehicle_rating")
 
 async function findVehicles(filter) {
   const vehicles = await Vehicle.find({ availability: true })
@@ -28,10 +29,16 @@ async function deleteVehicle(vehicleId) {
   return deletedVehicle
 }
 
+async function createVehicleRating(vehicleRating) {
+  const newVehicleRating = await VehicleRating.create(vehicleRating)
+  return newVehicleRating
+}
+
 module.exports = {
   findVehicles,
   getVehicle,
   createVehicle,
   updateVehicle,
   deleteVehicle,
+  createVehicleRating,
 }
