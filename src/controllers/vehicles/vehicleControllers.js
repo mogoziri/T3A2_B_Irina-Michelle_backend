@@ -34,6 +34,11 @@ async function createVehicleRating(vehicleRating) {
   return newVehicleRating
 }
 
+// TODO: implement
+async function getAverageVehicleRating(vehicleId) {
+  return 5.0
+}
+
 module.exports = {
   findVehicles,
   getVehicle,
@@ -41,4 +46,5 @@ module.exports = {
   updateVehicle,
   deleteVehicle,
   createVehicleRating,
+  getAverageVehicleRating,
 }
