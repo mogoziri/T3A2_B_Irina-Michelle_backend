@@ -24,7 +24,6 @@ vehicleRouter.get("/:vehicleId", async (request, response) => {
   try {
     const vehicleId = request.params.vehicleId
     const vehicle = await getVehicle(vehicleId)
-    console.log(vehicle)
     return response.json(vehicle)
   } catch (err) {
     response.sendStatus(404)

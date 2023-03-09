@@ -18,9 +18,9 @@ userRouter.post("/register", async (request, response) => {
     password: request.body.password,
   })
   if (token.error) {
-    response.status(400).json({ data: token.error })
+    return response.status(400).json({ data: token.error })
   }
-  response.json(token)
+  return response.json(token)
 })
 
 userRouter.post("/login", async (request, response) => {
@@ -34,6 +34,10 @@ userRouter.post("/login", async (request, response) => {
   return response.json(token)
 })
 
+userRouter.get("/profile", auth, async (request, response) => {
+  return response.json(request.user)
+})
+
 userRouter.get("/:userId/reservations", auth, async (request, response) => {
   if (request.user._id != request.params.userId) {
     return response.sendStatus(401)
@@ -43,15 +47,16 @@ userRouter.get("/:userId/reservations", auth, async (request, response) => {
 })
 
 userRouter.post("/:userId/rating", auth, async (request, response) => {
-  const userRating = await createUserRating(request.params.userId, {
+  const userRating = await createUserRating({
+    user_id: request.body.user_id,
     rating: request.body.rating,
   })
-  response.json(userRating)
+  return response.json(userRating)
 })
 
 userRouter.get("/:userId/rating", async (request, response) => {
   const userRating = await getAverageUserRating(request.params.userId)
-  response.json(userRating)
+  return response.json({ rating: userRating })
 })
 
 userRouter.get("/:ownerId/vehicles", async (request, response) => {
