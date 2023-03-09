@@ -116,3 +116,31 @@ describe("PUT /vehicles/:vehicleId", () => {
     expect(response.statusCode).toBe(200)
   })
 })
+
+describe("POST /vehicles/:vehicleId/rating", () => {
+  it("should add a new rating for vehicle", async () => {
+    const vehiclesResponse = await request(app).get("/vehicles").send()
+    const vehicleId = vehiclesResponse.body[0].vehicle_id
+
+    const response = await request(app)
+      .post("/vehicles/" + vehicleId + "/rating")
+      .set("Cookie", cookie)
+      .send({ vehicle_id: vehicleId, rating: 3 })
+    expect(response.statusCode).toBe(200)
+  })
+})
+
+describe("GET /vehicles/:vehicleId/rating", () => {
+  it("should get an average rating for vehicle", async () => {
+    const vehiclesResponse = await request(app).get("/vehicles").send()
+    const vehicleId = vehiclesResponse.body[0].vehicle_id
+
+    const response = await request(app)
+      .get("/vehicles/" + vehicleId + "/rating")
+      .send()
+    expect(response.statusCode).toBe(200)
+    expect(response.body.hasOwnProperty("rating")).toBe(true)
+    const rating = parseFloat(response.body.rating)
+    expect(rating).toBeCloseTo(3.0)
+  })
+})
