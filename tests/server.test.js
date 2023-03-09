@@ -10,7 +10,7 @@ describe("server main route", () => {
     expect(response.text).toEqual(expect.stringContaining("Hello World"))
   })
 
-  it("returns not found for other routes", async () => {
+  it("returns not found for non-existing routes", async () => {
     const response = await request(app).get("/does-not-exist")
     //assertion
     expect(response.statusCode).toBe(404)

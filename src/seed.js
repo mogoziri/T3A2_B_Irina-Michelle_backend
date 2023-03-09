@@ -12,14 +12,13 @@ async function createUser(username, isAdmin) {
     password: hashedPassword,
     is_admin: isAdmin,
   })
-  console.log(user)
   return user
 }
 
 mongoose.connect(process.env.MONGO_URI, async () => {
   await User.deleteMany({})
   const user = await createUser("user")
-  const admin = await createUser("admin", true)
+  await createUser("admin", true)
   await Vehicle.deleteMany({})
   const vehicle = await Vehicle.create({
     type: "SUV",
