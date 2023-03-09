@@ -43,6 +43,11 @@ async function loginUser(user) {
   return token
 }
 
+async function deleteUser(userId) {
+  const deletedUser = await User.findByIdAndDelete(userId)
+  return deletedUser
+}
+
 async function listUserReservations(userId) {
   const userReservations = await User.find({ user_id: userId })
   return userReservations
@@ -61,8 +66,6 @@ async function getAverageUserRating(userId) {
     .match({ user_id: userId })
     // calculate average rating across matching documents
     .group({ _id: null, avgRating: { $avg: "$rating" } })
-    // execute aggregate
-    .exec()
   return avg[0].avgRating
 }
 
@@ -74,6 +77,7 @@ async function createUserRating(userRating) {
 module.exports = {
   registerUser,
   loginUser,
+  deleteUser,
   listUserReservations,
   listOwnerVehicles,
   getAverageUserRating,

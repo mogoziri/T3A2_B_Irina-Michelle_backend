@@ -3,12 +3,14 @@ const express = require("express")
 const {
   registerUser,
   loginUser,
+  deleteUser,
   listUserReservations,
   listOwnerVehicles,
   getAverageUserRating,
   createUserRating,
 } = require("./userControllers")
 const { auth } = require("../../middleware/auth")
+const { admin } = require("../../middleware/admin")
 
 const userRouter = express.Router()
 
@@ -32,6 +34,15 @@ userRouter.post("/login", async (request, response) => {
     response.cookie("accessToken", token)
   }
   return response.json(token)
+})
+
+userRouter.delete("/:userId", auth, admin, async (request, response) => {
+  try {
+    const user = await deleteUser(request.params.userId)
+    return response.json(user)
+  } catch (error) {
+    return response.sendStatus(404)
+  }
 })
 
 userRouter.get("/profile", auth, async (request, response) => {

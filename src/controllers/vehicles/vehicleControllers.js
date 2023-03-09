@@ -7,7 +7,7 @@ async function findVehicles(filter) {
 }
 
 async function getVehicle(id) {
-  const vehicle = await Vehicle.findById(id).exec()
+  const vehicle = await Vehicle.findById(id)
   return vehicle
 }
 
@@ -34,9 +34,14 @@ async function createVehicleRating(vehicleRating) {
   return newVehicleRating
 }
 
-// TODO: implement
 async function getAverageVehicleRating(vehicleId) {
-  return 5.0
+  // creates aggregate over VehicleRating collection
+  const avg = await VehicleRating.aggregate()
+    // select vehicle rating documents with vehicle_id == vehicleId
+    .match({ vehicle_id: vehicleId })
+    // calculate average rating across matching documents
+    .group({ _id: null, avgRating: { $avg: "$rating" } })
+  return avg[0].avgRating
 }
 
 module.exports = {

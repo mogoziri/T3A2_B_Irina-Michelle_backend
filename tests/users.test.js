@@ -18,6 +18,28 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  // delete the user that was just created for test (userNew)
+  const userLoginResponse = await request(app)
+    .post("/users/login")
+    .send({ username: "userNew", password: "password" })
+  const userCookie = userLoginResponse.get("Set-Cookie")
+  const profileResponse = await request(app)
+    .get("/users/profile")
+    .set("Cookie", userCookie)
+    .send()
+  const userId = profileResponse.body._id
+
+  const loginResponse = await request(app)
+    .post("/users/login")
+    .send({ username: "admin", password: "password" })
+
+  const adminCookie = loginResponse.get("Set-Cookie")
+  const deleteResponse = await request(app)
+    .delete("/users/" + userId)
+    .set("Cookie", adminCookie)
+    .send()
+  expect(deleteResponse.statusCode).toBe(200)
+
   await mongoose.connection.close()
 })
 
