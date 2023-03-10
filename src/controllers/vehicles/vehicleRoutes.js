@@ -72,15 +72,16 @@ vehicleRouter.delete("/:vehicleId", auth, admin, async (request, response) => {
 })
 
 vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
-  const vehicleRating = await createVehicleRating(request.params.vehicleId, {
+  const vehicleRating = await createVehicleRating({
+    vehicle_id: request.params.vehicleId,
     rating: request.body.rating,
   })
-  response.json(vehicleRating)
+  return response.json(vehicleRating)
 })
 
 vehicleRouter.get("/:vehicleId/rating", async (request, response) => {
   const vehicleRating = await getAverageVehicleRating(request.params.vehicleId)
-  response.json(vehicleRating)
+  return response.json({ rating: vehicleRating })
 })
 
 module.exports = vehicleRouter

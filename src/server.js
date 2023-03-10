@@ -14,10 +14,11 @@ app.use(cookieParser())
 app.use(express.json())
 
 const corsOption = {
+  // the origin that we want to accept, i.e. our frontend
   origin: [
     "http://localhost:3000",
     "https://marvelous-meringue-60e2ef.netlify.app",
-  ], // the origin that we want to accept, i.e. our frontend
+  ],
   optionsSuccessStatus: 200,
 }
 
