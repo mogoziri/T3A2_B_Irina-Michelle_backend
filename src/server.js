@@ -18,6 +18,7 @@ const corsOption = {
   origin: [
     "http://localhost:3000",
     "https://marvelous-meringue-60e2ef.netlify.app",
+    /\.netlify\.app$/
   ],
   optionsSuccessStatus: 200,
 }
