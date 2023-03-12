@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../../models/user")
 const Vehicle = require("../../models/vehicle")
 const UserRating = require("../../models/user_rating")
+const Reservation = require("../../models/reservations")
 
 async function registerUser(user) {
   const existingUser = await User.findOne({ username: user.username })
@@ -49,7 +50,7 @@ async function deleteUser(userId) {
 }
 
 async function listUserReservations(userId) {
-  const userReservations = await User.find({ user_id: userId })
+  const userReservations = await Reservation.find({ renter_id: userId })
   return userReservations
 }
 

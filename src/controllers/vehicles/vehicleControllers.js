@@ -25,11 +25,6 @@ async function updateVehicle(vehicleId, vehicle) {
   return updatedVehicle
 }
 
-async function deleteVehicle(vehicleId) {
-  const deletedVehicle = await Vehicle.findByIdAndDelete(vehicleId)
-  return deletedVehicle
-}
-
 async function createVehicleRating(vehicleRating) {
   const newVehicleRating = await VehicleRating.create(vehicleRating)
   return newVehicleRating
@@ -65,7 +60,6 @@ module.exports = {
   getVehicle,
   createVehicle,
   updateVehicle,
-  deleteVehicle,
   createVehicleRating,
   getAverageVehicleRating,
   createReservation,
