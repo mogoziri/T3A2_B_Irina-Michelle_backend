@@ -30,9 +30,10 @@ userRouter.post("/login", async (request, response) => {
     username: request.body.username,
     password: request.body.password,
   })
-  if (!token.error) {
-    response.cookie("accessToken", token)
+  if (token.error) {
+    return response.status(401).json({ data: token.error })
   }
+  response.cookie("accessToken", token)
   return response.json(token)
 })
 

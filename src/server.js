@@ -20,6 +20,7 @@ const corsOption = {
     "https://marvelous-meringue-60e2ef.netlify.app",
     /\.netlify\.app$/,
   ],
+  credentials: true,
   optionsSuccessStatus: 200,
 }
 
