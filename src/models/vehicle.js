@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const VehicleSchema = new mongoose.Schema({
-  type: {
+  transmission: {
     type: String,
     required: true,
     minLength: 3,

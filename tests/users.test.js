@@ -23,10 +23,7 @@ afterAll(async () => {
     .post("/users/login")
     .send({ username: "userNew", password: "password" })
   const userCookie = userLoginResponse.get("Set-Cookie")
-  const profileResponse = await request(app)
-    .get("/users/profile")
-    .set("Cookie", userCookie)
-    .send()
+  const profileResponse = await request(app).get("/users/profile").set("Cookie", userCookie).send()
   const userId = profileResponse.body._id
 
   const loginResponse = await request(app)
@@ -45,10 +42,7 @@ afterAll(async () => {
 
 describe("GET /users/profile", () => {
   it("should return a JSON payload of authenticated user", async () => {
-    const response = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const response = await request(app).get("/users/profile").set("Cookie", cookie).send()
     expect(response.statusCode).toBe(200)
     expect(response.body.hasOwnProperty("password")).toBe(false)
     expect(response.body.hasOwnProperty("username")).toBe(true)
@@ -58,10 +52,7 @@ describe("GET /users/profile", () => {
 
 describe("GET /users/:userId/reservations", () => {
   it("should return a list of reservations", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const response = await request(app)
       .get("/users/" + profileResponse.body._id + "/reservations")
       .set("Cookie", cookie)
@@ -73,10 +64,7 @@ describe("GET /users/:userId/reservations", () => {
 
 describe("POST /users/:userId/rating", () => {
   it("should add a new rating for user", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .post("/users/" + userId + "/rating")
@@ -88,10 +76,7 @@ describe("POST /users/:userId/rating", () => {
 
 describe("GET /users/:userId/rating", () => {
   it("should get an average rating for user", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .get("/users/" + userId + "/rating")
@@ -105,10 +90,7 @@ describe("GET /users/:userId/rating", () => {
 
 describe("GET /users/:ownerId/vehicles", () => {
   it("should return a list of owner vehicles", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .get("/users/" + userId + "/vehicles")

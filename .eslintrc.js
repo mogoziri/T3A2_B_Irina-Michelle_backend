@@ -12,9 +12,6 @@ module.exports = {
   },
   rules: {
     quotes: ["error", "double", { avoidEscape: true }],
-    "no-unused-vars": [
-      "warn",
-      { vars: "all", args: "after-used", ignoreRestSiblings: false },
-    ],
+    "no-unused-vars": ["warn", { vars: "all", args: "after-used", ignoreRestSiblings: false }],
   },
 }
