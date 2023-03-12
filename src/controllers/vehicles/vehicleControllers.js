@@ -1,8 +1,9 @@
 const Vehicle = require("../../models/vehicle")
 const VehicleRating = require("../../models/vehicle_rating")
+const Reservation = require("../../models/reservations")
 
 async function findVehicles(filter) {
-  const vehicles = await Vehicle.find({ availability: true })
+  const vehicles = await Vehicle.find(filter)
   return vehicles
 }
 
@@ -35,13 +36,28 @@ async function createVehicleRating(vehicleRating) {
 }
 
 async function getAverageVehicleRating(vehicleId) {
-  // creates aggregate over VehicleRating collection
+  // create aggregate over VehicleRating collection
   const avg = await VehicleRating.aggregate()
     // select vehicle rating documents with vehicle_id == vehicleId
     .match({ vehicle_id: vehicleId })
     // calculate average rating across matching documents
     .group({ _id: null, avgRating: { $avg: "$rating" } })
   return avg[0].avgRating
+}
+
+async function createReservation(reservation) {
+  const vehicle = await getVehicle(reservation.vehicle_id)
+  reservation.owner_id = vehicle.owner_id
+  const newReservation = await Reservation.create(reservation)
+  return newReservation
+}
+
+async function updateReservationStatus(reservationId, reservation) {
+  const updatedReservation = await Reservation.findByIdAndUpdate(reservationId, reservation, {
+    new: true,
+    upsert: true,
+  })
+  return updatedReservation
 }
 
 module.exports = {
@@ -52,4 +68,6 @@ module.exports = {
   deleteVehicle,
   createVehicleRating,
   getAverageVehicleRating,
+  createReservation,
+  updateReservationStatus,
 }

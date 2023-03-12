@@ -60,7 +60,7 @@ async function listOwnerVehicles(ownerId) {
 }
 
 async function getAverageUserRating(userId) {
-  // creates aggregate over UserRating collection
+  // create aggregate over UserRating collection
   const avg = await UserRating.aggregate()
     // select user rating documents with user_id == userId
     .match({ user_id: userId })

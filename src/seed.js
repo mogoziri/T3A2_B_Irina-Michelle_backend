@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, async () => {
   await createUser("admin", true)
   await Vehicle.deleteMany({})
   const vehicle = await Vehicle.create({
-    type: "SUV",
+    transmission: "Automatic",
     owner_id: user._id,
     price_per_day: 90,
     location: "Summer Hill, NSW",

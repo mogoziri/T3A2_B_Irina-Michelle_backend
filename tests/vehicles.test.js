@@ -26,27 +26,36 @@ describe("GET /vehicles", () => {
     const response = await request(app).get("/vehicles").send()
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body.length).toBeGreaterThan(0)
+  })
+
+  it("should filter vehicles based on location", async () => {
+    const response = await request(app).get("/vehicles?location=Surry+Hills,+NSW").send()
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body.length).toBeGreaterThan(0)
+  })
+
+  it("should filter vehicles based on transmission", async () => {
+    const response = await request(app).get("/vehicles?transmission=Automatic").send()
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+    expect(response.body.length).toBeGreaterThan(0)
   })
 })
 
 describe("POST /vehicles", () => {
   it("should create a new vehicle", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
-    const response = await request(app)
-      .post("/vehicles")
-      .set("Cookie", cookie)
-      .send({
-        type: "SUV",
-        owner_id: userId,
-        price_per_day: 90,
-        location: "Surry Hills, NSW",
-        availability: true,
-        description: "Best",
-      })
+    const response = await request(app).post("/vehicles").set("Cookie", cookie).send({
+      transmission: "Automatic",
+      owner_id: userId,
+      price_per_day: 90,
+      location: "Surry Hills, NSW",
+      availability: true,
+      description: "Best",
+    })
 
     expect(response.statusCode).toBe(200)
   })
@@ -54,22 +63,16 @@ describe("POST /vehicles", () => {
 
 describe("GET /vehicles/:vehicleId", () => {
   it("should return details of a vehicle", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
-    const createResponse = await request(app)
-      .post("/vehicles")
-      .set("Cookie", cookie)
-      .send({
-        type: "SUV",
-        owner_id: userId,
-        price_per_day: 90,
-        location: "Surry Hills, NSW",
-        availability: true,
-        description: "Best",
-      })
+    const createResponse = await request(app).post("/vehicles").set("Cookie", cookie).send({
+      transmission: "Automatic",
+      owner_id: userId,
+      price_per_day: 90,
+      location: "Surry Hills, NSW",
+      availability: true,
+      description: "Best",
+    })
     const response = await request(app)
       .get("/vehicles/" + createResponse.body._id)
       .send()
@@ -85,30 +88,21 @@ describe("GET /vehicles/:vehicleId", () => {
 
 describe("PUT /vehicles/:vehicleId", () => {
   it("should return 404 if the vehicle does not exist", async () => {
-    const response = await request(app)
-      .put("/vehicles/does-not-exist")
-      .set("Cookie", cookie)
-      .send()
+    const response = await request(app).put("/vehicles/does-not-exist").set("Cookie", cookie).send()
     expect(response.statusCode).toBe(404)
   })
 
   it("should return details of updated vehicle", async () => {
-    const profileResponse = await request(app)
-      .get("/users/profile")
-      .set("Cookie", cookie)
-      .send()
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
     const userId = profileResponse.body._id
-    const createResponse = await request(app)
-      .post("/vehicles")
-      .set("Cookie", cookie)
-      .send({
-        type: "SUV",
-        owner_id: userId,
-        price_per_day: 90,
-        location: "Surry Hills, NSW",
-        availability: true,
-        description: "Best",
-      })
+    const createResponse = await request(app).post("/vehicles").set("Cookie", cookie).send({
+      transmission: "Manual",
+      owner_id: userId,
+      price_per_day: 90,
+      location: "Surry Hills, NSW",
+      availability: true,
+      description: "Best",
+    })
     const response = await request(app)
       .put("/vehicles/" + createResponse.body._id)
       .set("Cookie", cookie)
