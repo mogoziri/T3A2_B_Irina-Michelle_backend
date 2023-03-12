@@ -114,7 +114,7 @@ describe("PUT /vehicles/:vehicleId", () => {
 describe("POST /vehicles/:vehicleId/rating", () => {
   it("should add a new rating for vehicle", async () => {
     const vehiclesResponse = await request(app).get("/vehicles").send()
-    const vehicleId = vehiclesResponse.body[0].vehicle_id
+    const vehicleId = vehiclesResponse.body[0]._id
 
     const response = await request(app)
       .post("/vehicles/" + vehicleId + "/rating")
@@ -127,7 +127,7 @@ describe("POST /vehicles/:vehicleId/rating", () => {
 describe("GET /vehicles/:vehicleId/rating", () => {
   it("should get an average rating for vehicle", async () => {
     const vehiclesResponse = await request(app).get("/vehicles").send()
-    const vehicleId = vehiclesResponse.body[0].vehicle_id
+    const vehicleId = vehiclesResponse.body[0]._id
 
     const response = await request(app)
       .get("/vehicles/" + vehicleId + "/rating")
@@ -136,5 +136,60 @@ describe("GET /vehicles/:vehicleId/rating", () => {
     expect(response.body.hasOwnProperty("rating")).toBe(true)
     const rating = parseFloat(response.body.rating)
     expect(rating).toBeCloseTo(3.0)
+  })
+})
+
+describe("POST /vehicles/:vehicleId/reservation", () => {
+  it("should return 404 if the vehicle does not exist", async () => {
+    const response = await request(app)
+      .post("/vehicles/does-not-exist/reservation")
+      .set("Cookie", cookie)
+      .send()
+    expect(response.statusCode).toBe(404)
+  })
+
+  it("should create a new reservation", async () => {
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const userId = profileResponse.body._id
+    const vehiclesResponse = await request(app).get("/vehicles").send()
+    const vehicleId = vehiclesResponse.body[0]._id
+    const response = await request(app)
+      .post("/vehicles/" + vehicleId + "/reservation")
+      .set("Cookie", cookie)
+      .send({
+        renterId: userId,
+        reserveFrom: new Date("2023-03-25"),
+        reserveTo: new Date("2023-03-28"),
+      })
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe("created")
+    expect(response.body.owner_id).toBe(vehiclesResponse.body[0].owner_id)
+  })
+})
+
+describe("PUT /vehicles/reservation/:reservationId", () => {
+  it("should return 404 if the reservation does not exist", async () => {
+    const response = await request(app)
+      .put("/vehicles/reservation/does-not-exist")
+      .set("Cookie", cookie)
+      .send()
+    expect(response.statusCode).toBe(404)
+  })
+
+  it("should update a reservation", async () => {
+    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const reservationResponse = await request(app)
+      .get("/users/" + profileResponse.body._id + "/reservations")
+      .set("Cookie", cookie)
+      .send()
+    const reservationId = reservationResponse.body[0]._id
+    const response = await request(app)
+      .put("/vehicles/reservation/" + reservationId)
+      .set("Cookie", cookie)
+      .send({
+        status: "confirmed",
+      })
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe("confirmed")
   })
 })

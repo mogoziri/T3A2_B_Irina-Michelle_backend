@@ -5,7 +5,6 @@ const {
   getVehicle,
   createVehicle,
   updateVehicle,
-  deleteVehicle,
   createVehicleRating,
   getAverageVehicleRating,
   createReservation,
@@ -67,15 +66,6 @@ vehicleRouter.put("/:vehicleId", auth, async (request, response) => {
   }
 })
 
-vehicleRouter.delete("/:vehicleId", auth, admin, async (request, response) => {
-  try {
-    const vehicle = await deleteVehicle(request.params.vehicleId)
-    return response.json(vehicle)
-  } catch (error) {
-    return response.sendStatus(404)
-  }
-})
-
 vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
   const vehicleRating = await createVehicleRating({
     vehicle_id: request.params.vehicleId,
@@ -96,7 +86,7 @@ vehicleRouter.post("/:vehicleId/reservation", auth, async (request, response) =>
       vehicle_id: request.params.vehicleId,
       renter_id: request.user._id,
       reserve_from: request.body.reserveFrom,
-      reserve_to: request.body.reserveFrom,
+      reserve_to: request.body.reserveTo,
     })
 
     return response.json(reservation)
@@ -106,7 +96,7 @@ vehicleRouter.post("/:vehicleId/reservation", auth, async (request, response) =>
 })
 
 // Update reservation status.
-vehicleRouter.post("/reservation/:reservationId", auth, async (request, response) => {
+vehicleRouter.put("/reservation/:reservationId", auth, async (request, response) => {
   try {
     const reservation = await updateReservationStatus(request.params.reservationId, {
       status: request.body.status,
