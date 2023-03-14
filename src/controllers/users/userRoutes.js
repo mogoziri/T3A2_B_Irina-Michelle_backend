@@ -36,6 +36,7 @@ userRouter.post("/login", async (request, response) => {
   response.cookie("accessToken", token, {
     httpOnly: false,
     secure: process.env.NODE_ENV === "production",
+    domain: process.env.NODE_ENV === "production" ? "netlify.app" : "localhost",
     sameSite: "none",
   })
   return response.json(token)
