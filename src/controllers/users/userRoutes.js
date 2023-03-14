@@ -36,6 +36,7 @@ userRouter.post("/login", async (request, response) => {
   response.cookie("accessToken", token, {
     httpOnly: false,
     secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
   })
   return response.json(token)
 })
