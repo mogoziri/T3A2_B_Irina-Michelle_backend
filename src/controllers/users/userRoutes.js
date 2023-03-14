@@ -33,10 +33,7 @@ userRouter.post("/login", async (request, response) => {
   if (token.error) {
     return response.status(401).json({ data: token.error })
   }
-  response.cookie("accessToken", token, {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
-  })
+
   return response.json(token)
 })
 
@@ -49,7 +46,7 @@ userRouter.delete("/:userId", auth, admin, async (request, response) => {
   }
 })
 
-userRouter.get("/profile", auth, async (request, response) => {
+userRouter.post("/profile", auth, async (request, response) => {
   return response.json(request.user)
 })
 
