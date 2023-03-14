@@ -33,7 +33,6 @@ userRouter.post("/login", async (request, response) => {
   if (token.error) {
     return response.status(401).json({ data: token.error })
   }
-
   return response.json(token)
 })
 
