@@ -35,17 +35,21 @@ vehicleRouter.get("/:vehicleId", async (request, response) => {
 })
 
 vehicleRouter.post("/", auth, async (request, response) => {
-  const vehicle = await createVehicle({
-    transmission: request.body.transmission,
-    owner_id: request.body.owner_id,
-    price_per_day: request.body.price_per_day,
-    location: request.body.location,
-    availability: request.body.availability,
-    description: request.body.description,
-    features: request.body.features,
-    picture_url: request.body.picture_url,
-  })
-  response.json(vehicle)
+  try {
+    const vehicle = await createVehicle({
+      transmission: request.body.transmission,
+      owner_id: request.body.owner_id,
+      price_per_day: request.body.price_per_day,
+      location: request.body.location,
+      availability: request.body.availability,
+      description: request.body.description,
+      features: request.body.features,
+      picture_url: request.body.picture_url,
+    })
+    return response.json(vehicle)
+  } catch (error) {
+    return response.sendStatus(400)
+  }
 })
 
 vehicleRouter.put("/:vehicleId", auth, async (request, response) => {

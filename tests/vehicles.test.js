@@ -3,18 +3,18 @@ const request = require("supertest")
 const mongoose = require("mongoose")
 require("dotenv").config()
 
-let cookie
+let token
 
 beforeAll(async () => {
   mongoose.set("strictQuery", false)
-  await mongoose.connect(process.env.MONGO_URI)
+  await mongoose.connect(process.env.MONGO_URI_TEST)
 
   const response = await request(app).post("/users/login").send({
     username: "user",
     password: "password",
   })
 
-  cookie = response.get("Set-Cookie")
+  token = response.body
 })
 
 afterAll(async () => {
@@ -46,15 +46,16 @@ describe("GET /vehicles", () => {
 
 describe("POST /vehicles", () => {
   it("should create a new vehicle", async () => {
-    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
     const userId = profileResponse.body._id
-    const response = await request(app).post("/vehicles").set("Cookie", cookie).send({
+    const response = await request(app).post("/vehicles").send({
       transmission: "Automatic",
       owner_id: userId,
       price_per_day: 90,
       location: "Surry Hills, NSW",
       availability: true,
       description: "Best",
+      token: token
     })
 
     expect(response.statusCode).toBe(200)
@@ -63,15 +64,16 @@ describe("POST /vehicles", () => {
 
 describe("GET /vehicles/:vehicleId", () => {
   it("should return details of a vehicle", async () => {
-    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
     const userId = profileResponse.body._id
-    const createResponse = await request(app).post("/vehicles").set("Cookie", cookie).send({
+    const createResponse = await request(app).post("/vehicles").send({
       transmission: "Automatic",
       owner_id: userId,
       price_per_day: 90,
       location: "Surry Hills, NSW",
       availability: true,
       description: "Best",
+      token: token
     })
     const response = await request(app)
       .get("/vehicles/" + createResponse.body._id)
@@ -88,25 +90,25 @@ describe("GET /vehicles/:vehicleId", () => {
 
 describe("PUT /vehicles/:vehicleId", () => {
   it("should return 404 if the vehicle does not exist", async () => {
-    const response = await request(app).put("/vehicles/does-not-exist").set("Cookie", cookie).send()
+    const response = await request(app).put("/vehicles/does-not-exist").send({token: token})
     expect(response.statusCode).toBe(404)
   })
 
   it("should return details of updated vehicle", async () => {
-    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
     const userId = profileResponse.body._id
-    const createResponse = await request(app).post("/vehicles").set("Cookie", cookie).send({
+    const createResponse = await request(app).post("/vehicles").send({
       transmission: "Manual",
       owner_id: userId,
       price_per_day: 90,
       location: "Surry Hills, NSW",
       availability: true,
       description: "Best",
+      token: token
     })
     const response = await request(app)
       .put("/vehicles/" + createResponse.body._id)
-      .set("Cookie", cookie)
-      .send()
+      .send({token: token})
     expect(response.statusCode).toBe(200)
   })
 })
@@ -118,8 +120,7 @@ describe("POST /vehicles/:vehicleId/rating", () => {
 
     const response = await request(app)
       .post("/vehicles/" + vehicleId + "/rating")
-      .set("Cookie", cookie)
-      .send({ vehicle_id: vehicleId, rating: 3 })
+      .send({ vehicle_id: vehicleId, rating: 3, token: token })
     expect(response.statusCode).toBe(200)
   })
 })
@@ -143,23 +144,22 @@ describe("POST /vehicles/:vehicleId/reservation", () => {
   it("should return 404 if the vehicle does not exist", async () => {
     const response = await request(app)
       .post("/vehicles/does-not-exist/reservation")
-      .set("Cookie", cookie)
-      .send()
+      .send({token: token})
     expect(response.statusCode).toBe(404)
   })
 
   it("should create a new reservation", async () => {
-    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
     const userId = profileResponse.body._id
     const vehiclesResponse = await request(app).get("/vehicles").send()
     const vehicleId = vehiclesResponse.body[0]._id
     const response = await request(app)
       .post("/vehicles/" + vehicleId + "/reservation")
-      .set("Cookie", cookie)
       .send({
         renterId: userId,
         reserveFrom: new Date("2023-03-25"),
         reserveTo: new Date("2023-03-28"),
+        token: token
       })
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe("created")
@@ -171,23 +171,21 @@ describe("PUT /vehicles/reservation/:reservationId", () => {
   it("should return 404 if the reservation does not exist", async () => {
     const response = await request(app)
       .put("/vehicles/reservation/does-not-exist")
-      .set("Cookie", cookie)
-      .send()
+      .send({token: token})
     expect(response.statusCode).toBe(404)
   })
 
   it("should update a reservation", async () => {
-    const profileResponse = await request(app).get("/users/profile").set("Cookie", cookie).send()
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
     const reservationResponse = await request(app)
       .get("/users/" + profileResponse.body._id + "/reservations")
-      .set("Cookie", cookie)
-      .send()
+      .send({token: token})
     const reservationId = reservationResponse.body[0]._id
     const response = await request(app)
       .put("/vehicles/reservation/" + reservationId)
-      .set("Cookie", cookie)
       .send({
         status: "confirmed",
+        token: token
       })
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe("confirmed")

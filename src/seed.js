@@ -15,7 +15,7 @@ async function createUser(username, isAdmin) {
   return user
 }
 
-mongoose.connect(process.env.MONGO_URI, async () => {
+mongoose.connect(process.env.MONGO_URI_TEST, async () => {
   await User.deleteMany({})
   const user = await createUser("user")
   await createUser("admin", true)
