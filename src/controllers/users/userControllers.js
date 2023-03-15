@@ -54,6 +54,11 @@ async function listUserReservations(userId) {
   return userReservations
 }
 
+async function listOwnerReservations(ownerId) {
+  const ownerReservations = await Reservation.find({ owner_id: ownerId })
+  return ownerReservations
+}
+
 async function listOwnerVehicles(ownerId) {
   const ownerVehicles = await Vehicle.find({ owner_id: ownerId })
 
@@ -80,6 +85,7 @@ module.exports = {
   loginUser,
   deleteUser,
   listUserReservations,
+  listOwnerReservations,
   listOwnerVehicles,
   getAverageUserRating,
   createUserRating,

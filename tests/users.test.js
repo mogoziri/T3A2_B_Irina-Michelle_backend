@@ -58,6 +58,17 @@ describe("GET /users/:userId/reservations", () => {
   })
 })
 
+describe("GET /users/owner/:ownerId/reservations", () => {
+  it("should return a list of owner reservations", async () => {
+    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const response = await request(app)
+      .get("/users/owner/" + profileResponse.body._id + "/reservations")
+      .send({token: token})
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+  })
+})
+
 describe("POST /users/:userId/rating", () => {
   it("should add a new rating for user", async () => {
     const profileResponse = await request(app).post("/users/profile").send({token: token})
