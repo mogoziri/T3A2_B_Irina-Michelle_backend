@@ -19,7 +19,7 @@ const vehicleRouter = express.Router()
 vehicleRouter.get("/", async (request, response) => {
   const vehicles = await findVehicles({
     availability: true,
-    ...request.query.params,
+    ...request.query,
   })
   return response.json(vehicles)
 })
