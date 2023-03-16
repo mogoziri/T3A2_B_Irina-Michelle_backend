@@ -17,7 +17,7 @@ const corsOption = {
   // the origin that we want to accept, i.e. our frontend
   origin: [
     "http://localhost:3000",
-    "https://marvelous-meringue-60e2ef.netlify.app",
+    "https://carental-irina-michelle.netlify.app",
     /\.netlify\.app$/,
   ],
   credentials: true,
