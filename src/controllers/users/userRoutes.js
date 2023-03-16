@@ -50,18 +50,12 @@ userRouter.post("/profile", auth, async (request, response) => {
   return response.json(request.user)
 })
 
-userRouter.get("/:userId/reservations", auth, async (request, response) => {
-  if (request.user._id != request.params.userId) {
-    return response.sendStatus(401)
-  }
+userRouter.get("/:userId/reservations", async (request, response) => {
   const reservations = await listUserReservations(request.params.userId)
   return response.json(reservations)
 })
 
-userRouter.get("/owner/:ownerId/reservations", auth, async (request, response) => {
-  if (request.user._id != request.params.ownerId) {
-    return response.sendStatus(401)
-  }
+userRouter.get("/owner/:ownerId/reservations", async (request, response) => {
   const reservations = await listOwnerReservations(request.params.ownerId)
   return response.json(reservations)
 })
