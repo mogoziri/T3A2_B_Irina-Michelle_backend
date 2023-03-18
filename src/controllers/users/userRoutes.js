@@ -46,16 +46,16 @@ userRouter.delete("/:userId", auth, admin, async (request, response) => {
   }
 })
 
-userRouter.post("/profile", auth, async (request, response) => {
+userRouter.get("/profile", auth, async (request, response) => {
   return response.json(request.user)
 })
 
-userRouter.get("/:userId/reservations", async (request, response) => {
+userRouter.get("/:userId/reservations", auth, async (request, response) => {
   const reservations = await listUserReservations(request.params.userId)
   return response.json(reservations)
 })
 
-userRouter.get("/owner/:ownerId/reservations", async (request, response) => {
+userRouter.get("/owner/:ownerId/reservations", auth, async (request, response) => {
   const reservations = await listOwnerReservations(request.params.ownerId)
   return response.json(reservations)
 })

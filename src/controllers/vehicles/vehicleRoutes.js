@@ -12,7 +12,6 @@ const {
 } = require("./vehicleControllers")
 
 const { auth } = require("../../middleware/auth")
-const { admin } = require("../../middleware/admin")
 
 const vehicleRouter = express.Router()
 

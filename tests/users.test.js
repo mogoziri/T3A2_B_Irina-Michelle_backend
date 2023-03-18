@@ -22,7 +22,10 @@ afterAll(async () => {
   const userLoginResponse = await request(app)
     .post("/users/login")
     .send({ username: "userNew", password: "password" })
-  const profileResponse = await request(app).post("/users/profile").send({token: userLoginResponse.body})
+  const profileResponse = await request(app)
+    .get("/users/profile")
+    .set("Authorization", "Bearer " + userLoginResponse.body)
+    .send()
   const userId = profileResponse.body._id
 
   const loginResponse = await request(app)
@@ -31,7 +34,8 @@ afterAll(async () => {
 
   const deleteResponse = await request(app)
     .delete("/users/" + userId)
-    .send({token: loginResponse.body})
+    .set("Authorization", "Bearer " + loginResponse.body)
+    .send()
   expect(deleteResponse.statusCode).toBe(200)
 
   await mongoose.connection.close()
@@ -39,7 +43,10 @@ afterAll(async () => {
 
 describe("GET /users/profile", () => {
   it("should return a JSON payload of authenticated user", async () => {
-    const response = await request(app).post("/users/profile").send({token: token})
+    const response = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(200)
     expect(response.body.hasOwnProperty("password")).toBe(false)
     expect(response.body.hasOwnProperty("username")).toBe(true)
@@ -49,10 +56,14 @@ describe("GET /users/profile", () => {
 
 describe("GET /users/:userId/reservations", () => {
   it("should return a list of reservations", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const response = await request(app)
       .get("/users/" + profileResponse.body._id + "/reservations")
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
   })
@@ -60,10 +71,14 @@ describe("GET /users/:userId/reservations", () => {
 
 describe("GET /users/owner/:ownerId/reservations", () => {
   it("should return a list of owner reservations", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const response = await request(app)
       .get("/users/owner/" + profileResponse.body._id + "/reservations")
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
   })
@@ -71,18 +86,25 @@ describe("GET /users/owner/:ownerId/reservations", () => {
 
 describe("POST /users/:userId/rating", () => {
   it("should add a new rating for user", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .post("/users/" + userId + "/rating")
-      .send({ user_id: userId, rating: 4, token: token })
+      .set("Authorization", "Bearer " + token)
+      .send({ user_id: userId, rating: 4 })
     expect(response.statusCode).toBe(200)
   })
 })
 
 describe("GET /users/:userId/rating", () => {
   it("should get an average rating for user", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .get("/users/" + userId + "/rating")
@@ -96,7 +118,10 @@ describe("GET /users/:userId/rating", () => {
 
 describe("GET /users/:ownerId/vehicles", () => {
   it("should return a list of owner vehicles", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .post("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
     const response = await request(app)
       .get("/users/" + userId + "/vehicles")
