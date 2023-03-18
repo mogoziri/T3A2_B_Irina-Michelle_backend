@@ -93,9 +93,7 @@ describe("GET /vehicles/:vehicleId", () => {
   })
 
   it("should return 404 if the vehicle does not exist", async () => {
-    const response = await request(app)
-      .get("/vehicles/does-not-exist")
-      .send()
+    const response = await request(app).get("/vehicles/does-not-exist").send()
     expect(response.statusCode).toBe(404)
   })
 })

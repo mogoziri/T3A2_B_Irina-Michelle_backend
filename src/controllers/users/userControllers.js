@@ -49,14 +49,28 @@ async function deleteUser(userId) {
   return deletedUser
 }
 
+async function aggregateReservations(filter) {
+  const reservations = await Reservation.aggregate()
+    .match(filter)
+    .addFields({
+      vehicleId: { $convert: { input: "$vehicle_id", to: "objectId", onError: "", onNull: "" } },
+    })
+    .lookup({
+      from: "vehicles",
+      localField: "vehicleId",
+      foreignField: "_id",
+      as: "vehicle",
+    })
+    .unwind("vehicle")
+  return reservations
+}
+
 async function listUserReservations(userId) {
-  const userReservations = await Reservation.find({ renter_id: userId })
-  return userReservations
+  return aggregateReservations({ renter_id: userId })
 }
 
 async function listOwnerReservations(ownerId) {
-  const ownerReservations = await Reservation.find({ owner_id: ownerId })
-  return ownerReservations
+  return aggregateReservations({ owner_id: ownerId })
 }
 
 async function listOwnerVehicles(ownerId) {
