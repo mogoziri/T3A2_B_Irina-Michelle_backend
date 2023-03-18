@@ -52,6 +52,11 @@ async function updateReservationStatus(reservationId, reservation) {
     new: true,
     upsert: true,
   })
+  if (updatedReservation.status === "complete") {
+    await Vehicle.findByIdAndUpdate(updatedReservation.vehicle_id, { availability: true })
+  } else if (updatedReservation.status === "confirmed") {
+    await Vehicle.findByIdAndUpdate(updatedReservation.vehicle_id, { availability: false })
+  }
   return updatedReservation
 }
 
