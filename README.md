@@ -65,7 +65,7 @@
 
 ### Standard Tablet Wireframes
 
-![Standard Tablet Wireframes](docs/tablet__wireframe_updated.jpg)
+![Standard Tablet Wireframes](docs/tablet_wireframe_updated.jpg)
 
 ### Standard Desktop Wireframes
 
