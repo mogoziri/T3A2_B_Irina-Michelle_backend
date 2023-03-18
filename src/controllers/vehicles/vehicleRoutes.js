@@ -15,6 +15,7 @@ const { auth } = require("../../middleware/auth")
 
 const vehicleRouter = express.Router()
 
+// Get available vehicles
 vehicleRouter.get("/", async (request, response) => {
   const vehicles = await findVehicles({
     availability: true,
@@ -23,6 +24,7 @@ vehicleRouter.get("/", async (request, response) => {
   return response.json(vehicles)
 })
 
+// Get a specific vehicle
 vehicleRouter.get("/:vehicleId", async (request, response) => {
   try {
     const vehicleId = request.params.vehicleId
@@ -33,6 +35,7 @@ vehicleRouter.get("/:vehicleId", async (request, response) => {
   }
 })
 
+// Create a new vehicle
 vehicleRouter.post("/", auth, async (request, response) => {
   try {
     const vehicle = await createVehicle({
@@ -51,6 +54,7 @@ vehicleRouter.post("/", auth, async (request, response) => {
   }
 })
 
+// Update a specific vehicle
 vehicleRouter.put("/:vehicleId", auth, async (request, response) => {
   try {
     const updatedVehicle = await updateVehicle(request.params.vehicleId, {
@@ -69,6 +73,7 @@ vehicleRouter.put("/:vehicleId", auth, async (request, response) => {
   }
 })
 
+// Create a vehicle rating
 vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
   const vehicleRating = await createVehicleRating({
     vehicle_id: request.params.vehicleId,
@@ -77,12 +82,13 @@ vehicleRouter.post("/:vehicleId/rating", auth, async (request, response) => {
   return response.json(vehicleRating)
 })
 
+// Get an average vehicle rating
 vehicleRouter.get("/:vehicleId/rating", async (request, response) => {
   const vehicleRating = await getAverageVehicleRating(request.params.vehicleId)
   return response.json({ rating: vehicleRating })
 })
 
-// Create new reservation.
+// Create new reservation
 vehicleRouter.post("/:vehicleId/reservation", auth, async (request, response) => {
   try {
     const reservation = await createReservation({
@@ -98,7 +104,7 @@ vehicleRouter.post("/:vehicleId/reservation", auth, async (request, response) =>
   }
 })
 
-// Update reservation status.
+// Update reservation status
 vehicleRouter.put("/reservation/:reservationId", auth, async (request, response) => {
   try {
     const reservation = await updateReservationStatus(request.params.reservationId, {
