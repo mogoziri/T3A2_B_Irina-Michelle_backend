@@ -12,6 +12,10 @@
 [Backend](https://t3a2birina-michellebackend-production.up.railway.app)
 [Frontend](https://carental-irina-michelle.netlify.app)
 
+### Project management
+
+[Trello board](https://trello.com/b/MIjLtO2T/carental-application)
+
 ## Libraries
 
 ### Front End Libraries:
@@ -55,9 +59,17 @@
 
 ## The final version of web application wireframes:
 
-![Standard Phone Wireframes](docs/phone_wf.jpg)
-![Standard Tablet Wireframes](docs/tablet_wf.jpg)
-![Standard Desktop Wireframes](docs/tablet_wf.jpg)
+### Standard Phone Wireframes
+
+![Standard Phone Wireframes](docs/phone_wireframe_updated.jpg)
+
+### Standard Tablet Wireframes
+
+![Standard Tablet Wireframes](docs/tablet__wireframe_updated.jpg)
+
+### Standard Desktop Wireframes
+
+![Standard Desktop Wireframes](docs/desktop_wireframe_updated.jpg)
 
 ## Development Testing Documentation
 
