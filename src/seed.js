@@ -32,6 +32,5 @@ mongoose.connect(process.env.MONGO_URI_TEST, async () => {
   })
   console.log(vehicle)
 
-  // optional: add user rating, vehicle rating and reservation
   mongoose.connection.close()
 })

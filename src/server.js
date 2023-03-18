@@ -1,6 +1,5 @@
 const express = require("express")
 const cors = require("cors")
-const cookieParser = require("cookie-parser")
 const helmet = require("helmet")
 require("dotenv").config()
 
@@ -10,7 +9,6 @@ const vehicleRouter = require("./controllers/vehicles/vehicleRoutes")
 const app = express()
 
 app.use(helmet())
-app.use(cookieParser())
 app.use(express.json())
 
 const corsOption = {

@@ -2,21 +2,25 @@ const Vehicle = require("../../models/vehicle")
 const VehicleRating = require("../../models/vehicle_rating")
 const Reservation = require("../../models/reservations")
 
+// Find all available vehicles
 async function findVehicles(filter) {
   const vehicles = await Vehicle.find(filter)
   return vehicles
 }
 
+// Find a specific vehicle
 async function getVehicle(id) {
   const vehicle = await Vehicle.findById(id)
   return vehicle
 }
 
+// Create a new vehicle
 async function createVehicle(vehicle) {
   const newVehicle = await Vehicle.create(vehicle)
   return newVehicle
 }
 
+// Update a vehicle
 async function updateVehicle(vehicleId, vehicle) {
   const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicle, {
     new: true,
@@ -25,11 +29,13 @@ async function updateVehicle(vehicleId, vehicle) {
   return updatedVehicle
 }
 
+// Create a vehicle rating
 async function createVehicleRating(vehicleRating) {
   const newVehicleRating = await VehicleRating.create(vehicleRating)
   return newVehicleRating
 }
 
+// Get an average vehicle rating
 async function getAverageVehicleRating(vehicleId) {
   // create aggregate over VehicleRating collection
   const avg = await VehicleRating.aggregate()
@@ -40,6 +46,7 @@ async function getAverageVehicleRating(vehicleId) {
   return avg[0].avgRating
 }
 
+// Create a reservation
 async function createReservation(reservation) {
   const vehicle = await getVehicle(reservation.vehicle_id)
   reservation.owner_id = vehicle.owner_id
@@ -47,6 +54,7 @@ async function createReservation(reservation) {
   return newReservation
 }
 
+// Update a reservation status
 async function updateReservationStatus(reservationId, reservation) {
   const updatedReservation = await Reservation.findByIdAndUpdate(reservationId, reservation, {
     new: true,
