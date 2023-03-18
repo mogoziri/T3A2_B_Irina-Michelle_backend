@@ -46,17 +46,22 @@ describe("GET /vehicles", () => {
 
 describe("POST /vehicles", () => {
   it("should create a new vehicle", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
-    const response = await request(app).post("/vehicles").send({
-      transmission: "Automatic",
-      owner_id: userId,
-      price_per_day: 90,
-      location: "Surry Hills, NSW",
-      availability: true,
-      description: "Best",
-      token: token
-    })
+    const response = await request(app)
+      .post("/vehicles")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        transmission: "Automatic",
+        owner_id: userId,
+        price_per_day: 90,
+        location: "Surry Hills, NSW",
+        availability: true,
+        description: "Best",
+      })
 
     expect(response.statusCode).toBe(200)
   })
@@ -64,17 +69,22 @@ describe("POST /vehicles", () => {
 
 describe("GET /vehicles/:vehicleId", () => {
   it("should return details of a vehicle", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
-    const createResponse = await request(app).post("/vehicles").send({
-      transmission: "Automatic",
-      owner_id: userId,
-      price_per_day: 90,
-      location: "Surry Hills, NSW",
-      availability: true,
-      description: "Best",
-      token: token
-    })
+    const createResponse = await request(app)
+      .post("/vehicles")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        transmission: "Automatic",
+        owner_id: userId,
+        price_per_day: 90,
+        location: "Surry Hills, NSW",
+        availability: true,
+        description: "Best",
+      })
     const response = await request(app)
       .get("/vehicles/" + createResponse.body._id)
       .send()
@@ -83,32 +93,43 @@ describe("GET /vehicles/:vehicleId", () => {
   })
 
   it("should return 404 if the vehicle does not exist", async () => {
-    const response = await request(app).get("/vehicles/does-not-exist").send()
+    const response = await request(app)
+      .get("/vehicles/does-not-exist")
+      .send()
     expect(response.statusCode).toBe(404)
   })
 })
 
 describe("PUT /vehicles/:vehicleId", () => {
   it("should return 404 if the vehicle does not exist", async () => {
-    const response = await request(app).put("/vehicles/does-not-exist").send({token: token})
+    const response = await request(app)
+      .put("/vehicles/does-not-exist")
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(404)
   })
 
   it("should return details of updated vehicle", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
-    const createResponse = await request(app).post("/vehicles").send({
-      transmission: "Manual",
-      owner_id: userId,
-      price_per_day: 90,
-      location: "Surry Hills, NSW",
-      availability: true,
-      description: "Best",
-      token: token
-    })
+    const createResponse = await request(app)
+      .post("/vehicles")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        transmission: "Manual",
+        owner_id: userId,
+        price_per_day: 90,
+        location: "Surry Hills, NSW",
+        availability: true,
+        description: "Best",
+      })
     const response = await request(app)
       .put("/vehicles/" + createResponse.body._id)
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send({})
     expect(response.statusCode).toBe(200)
   })
 })
@@ -120,7 +141,8 @@ describe("POST /vehicles/:vehicleId/rating", () => {
 
     const response = await request(app)
       .post("/vehicles/" + vehicleId + "/rating")
-      .send({ vehicle_id: vehicleId, rating: 3, token: token })
+      .set("Authorization", "Bearer " + token)
+      .send({ vehicle_id: vehicleId, rating: 3 })
     expect(response.statusCode).toBe(200)
   })
 })
@@ -144,22 +166,26 @@ describe("POST /vehicles/:vehicleId/reservation", () => {
   it("should return 404 if the vehicle does not exist", async () => {
     const response = await request(app)
       .post("/vehicles/does-not-exist/reservation")
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(404)
   })
 
   it("should create a new reservation", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const userId = profileResponse.body._id
     const vehiclesResponse = await request(app).get("/vehicles").send()
     const vehicleId = vehiclesResponse.body[0]._id
     const response = await request(app)
       .post("/vehicles/" + vehicleId + "/reservation")
+      .set("Authorization", "Bearer " + token)
       .send({
         renterId: userId,
         reserveFrom: new Date("2023-03-25"),
         reserveTo: new Date("2023-03-28"),
-        token: token
       })
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe("created")
@@ -171,22 +197,29 @@ describe("PUT /vehicles/reservation/:reservationId", () => {
   it("should return 404 if the reservation does not exist", async () => {
     const response = await request(app)
       .put("/vehicles/reservation/does-not-exist")
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send()
     expect(response.statusCode).toBe(404)
   })
 
   it("should update a reservation", async () => {
-    const profileResponse = await request(app).post("/users/profile").send({token: token})
+    const profileResponse = await request(app)
+      .get("/users/profile")
+      .set("Authorization", "Bearer " + token)
+      .send()
     const reservationResponse = await request(app)
       .get("/users/" + profileResponse.body._id + "/reservations")
-      .send({token: token})
+      .set("Authorization", "Bearer " + token)
+      .send()
     const reservationId = reservationResponse.body[0]._id
     const response = await request(app)
       .put("/vehicles/reservation/" + reservationId)
+      .set("Authorization", "Bearer " + token)
+      .send()
       .send({
         status: "confirmed",
-        token: token
       })
+
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe("confirmed")
   })
