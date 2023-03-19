@@ -50,7 +50,7 @@ vehicleRouter.post("/", auth, async (request, response) => {
     })
     return response.json(vehicle)
   } catch (error) {
-    return response.sendStatus(400)
+    return response.status(400).json({ data: error })
   }
 })
 

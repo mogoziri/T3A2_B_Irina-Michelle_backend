@@ -25,6 +25,7 @@ async function updateVehicle(vehicleId, vehicle) {
   const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicle, {
     new: true,
     upsert: true,
+    runValidators: true,
   })
   return updatedVehicle
 }
