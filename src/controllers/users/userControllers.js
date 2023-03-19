@@ -5,6 +5,7 @@ const User = require("../../models/user")
 const Vehicle = require("../../models/vehicle")
 const UserRating = require("../../models/user_rating")
 const Reservation = require("../../models/reservations")
+const { use } = require("./userRoutes")
 
 // Register a new user
 async function registerUser(user) {
@@ -12,6 +13,9 @@ async function registerUser(user) {
   const existingUser = await User.findOne({ username: user.username })
   if (existingUser) {
     return { error: "Username already exists" }
+  }
+  if (user.password == null || user.password.length < 6) {
+    return { error: "Password is too short" }
   }
   // Create a hash password for the user
   const hashedPassword = await bcrypt.hash(user.password, 10)
