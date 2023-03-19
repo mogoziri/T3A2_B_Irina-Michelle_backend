@@ -2,7 +2,7 @@
 
 ## Links
 
-### Github
+### GitHub
 
 [Backend](https://github.com/mogoziri/t3a2_b_irina-michelle_backend)
 
@@ -14,13 +14,13 @@
 
 [Frontend](https://carental-irina-michelle.netlify.app)
 
-### Project management
+### Project Management
 
 [Trello board](https://trello.com/b/MIjLtO2T/carental-application)
 
 ## Libraries
 
-### Front End Libraries:
+### Front End Libraries
 
 | Library                     | Description                                                                                                                                         |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
