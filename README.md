@@ -57,7 +57,7 @@
 |   prettier   |                              Code formatting tool to apply consistent style                              |
 |  supertest   |                      Node.js library to test APIs, can be used with jest framework                       |
 
-## The final version of web application wireframes:
+## The final version of web application wireframes
 
 ### Standard Phone Wireframes
 
@@ -74,7 +74,7 @@
 ## Development Testing Documentation
 
 |                      Scenario                      |                           Action                           |                              Expected response                               |                               Actual response                               |
-| :------------------------------------------------: | :--------------------------------------------------------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+| ------------------------------------------------ | :--------------------------------------------------------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
 |     Register: User signs up only with username     |                 User enters only username                  |                                Shows an error                                |                     Fail: User registered successfully                      |
 |   Register: User signs up with existing username   |               User enters existing username                |                                Shows an error                                |                      Pass: Shows an error description                       |
 | Login: User logs in only with username or password |           User enters only username or password            |                                Shows an error                                |            Pass: Shows an error and missing details description             |
