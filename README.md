@@ -5,11 +5,13 @@
 ### Github
 
 [Backend](https://github.com/mogoziri/t3a2_b_irina-michelle_backend)
-[Frontent](https://github.com/mogoziri/t3a2_b_irina-michelle_frontend)
+
+[Frontend](https://github.com/mogoziri/t3a2_b_irina-michelle_frontend)
 
 ### Deployment
 
 [Backend](https://t3a2birina-michellebackend-production.up.railway.app)
+
 [Frontend](https://carental-irina-michelle.netlify.app)
 
 ### Project management
