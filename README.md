@@ -73,7 +73,33 @@
 
 ## Development Testing Documentation
 
+|                      Scenario                      |                           Action                           |                              Expected response                               |                               Actual response                               |
+| :------------------------------------------------: | :--------------------------------------------------------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+|     Register: User signs up only with username     |                 User enters only username                  |                                Shows an error                                |                     Fail: User registered successfully                      |
+|   Register: User signs up with existing username   |               User enters existing username                |                                Shows an error                                |                      Pass: Shows an error description                       |
+| Login: User logs in only with username or password |           User enters only username or password            |                                Shows an error                                |            Pass: Shows an error and missing details description             |
+|    Login: User logs in with incorrect password     |         User enters incorrect username or password         |                                Shows an error                                |                      Pass: Shows an error description                       |
+|           List my car: form verification           | User submits List my car form without all necessary fields |                                Shows an error                                |                          Fail: Shows an empty page                          |
+|          Update my car: form verification          |           User updates car status to unavailable           |                        Car disappears from home page                         |                   Fail: car still displayed in home page                    |
+|             Book a car: confirm action             |          User creates booking on car details page          |               Car owner gets booking reference on My Cars page               | Pass: booking available for confirmation or decline on owner's My Cars page |
+|          My Cars: confirm booking action           |           Owner confirms booking on My Cars page           | Booking appears on My Bookings page under user account with confirmed status |       Pass: booking appears on My Bookings page with declined status        |
+|          My Cars: decline booking action           |           Owner declines booking on My Cars page           | Booking appears on My Bookings page under user account with declined status  |       Pass: booking appears on My Bookings page with declined status        |
+|        My bookings: complete booking action        |         User completes booking on My Bookings page         |     Booking appears as completed on My Bookings page under user account      |           Pass: booking appears as completed on My Bookings page            |
+
 ## Production Testing Documentation
+
+|                      Scenario                      |                           Action                           |                              Expected response                               |                               Actual response                               |
+| :------------------------------------------------: | :--------------------------------------------------------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+|     Register: User signs up only with username     |                 User enters only username                  |                                Shows an error                                |                      Pass: Shows an error description                       |
+|   Register: User signs up with existing username   |               User enters existing username                |                                Shows an error                                |                      Pass: Shows an error description                       |
+| Login: User logs in only with username or password |           User enters only username or password            |                                Shows an error                                |            Pass: Shows an error and missing details description             |
+|    Login: User logs in with incorrect password     |         User enters incorrect username or password         |                                Shows an error                                |                      Pass: Shows an error description                       |
+|           List my car: form verification           | User submits List my car form without all necessary fields |                                Shows an error                                |                          Fail: Shows an empty page                          |
+|          Update my car: form verification          |           User updates car status to unavailable           |                        Car disappears from home page                         |                   Fail: car still displayed in home page                    |
+|             Book a car: confirm action             |          User creates booking on car details page          |               Car owner gets booking reference on My Cars page               | Pass: booking available for confirmation or decline on owner's My Cars page |
+|          My Cars: confirm booking action           |           Owner confirms booking on My Cars page           | Booking appears on My Bookings page under user account with confirmed status |       Pass: booking appears on My Bookings page with declined status        |
+|          My Cars: decline booking action           |           Owner declines booking on My Cars page           | Booking appears on My Bookings page under user account with declined status  |       Pass: booking appears on My Bookings page with declined status        |
+|        My bookings: complete booking action        |         User completes booking on My Bookings page         |     Booking appears as completed on My Bookings page under user account      |           Pass: booking appears as completed on My Bookings page            |
 
 # T3A2_A Carental Irina and Michelle
 
